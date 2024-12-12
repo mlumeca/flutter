@@ -22,8 +22,13 @@ class _PeopleScreenState extends State<PeopleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('People'),
-      ),
+          title: Row(children: [
+        SizedBox(
+            width: 50,
+            child: Image.asset('assets/images/Death-Star-icon.png',
+                fit: BoxFit.cover)),
+        const Text('Star Whooot?')
+      ])),
       body: FutureBuilder<PeopleResponse>(
         future: peopleResponse,
         builder: (context, snapshot) {
@@ -34,7 +39,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
           }
 
           // By default, show a loading spinner.
-          return const CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         },
       ),
     );
@@ -54,7 +59,10 @@ class _PeopleScreenState extends State<PeopleScreen> {
     return ListView.builder(
         itemCount: peopleResponse.results!.length,
         itemBuilder: (context, index) {
-          return Text(peopleResponse.results![index].name!);
+          return Stack(children: [
+            Image.network('https://swapi.dev/api/people/$index'),
+            Text(peopleResponse.results![index].name!),
+          ]);
         });
   }
 }

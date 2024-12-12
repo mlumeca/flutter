@@ -10,10 +10,10 @@ class People {
   String? birthYear;
   String? gender;
   String? homeworld;
-  List<String>? films;
-  List<String>? species;
-  List<String>? vehicles;
-  List<String>? starships;
+  List<dynamic>? films;
+  List<dynamic>? species;
+  List<dynamic>? vehicles;
+  List<dynamic>? starships;
   DateTime? created;
   DateTime? edited;
   String? url;
@@ -47,12 +47,24 @@ class People {
         birthYear: data['birth_year'] as String?,
         gender: data['gender'] as String?,
         homeworld: data['homeworld'] as String?,
-        films: (data['films'] as List<dynamic>?)?.map((e) => e as String).toList(),
-        species: (data['species'] as List<dynamic>?)?.map((e) => e as String).toList(),
-        vehicles: (data['vehicles'] as List<dynamic>?)?.map((e) => e as String).toList(),
-        starships: (data['starships'] as List<dynamic>?)?.map((e) => e as String).toList(),
-        created: data['created'] == null ? null : DateTime.parse(data['created'] as String),
-        edited: data['edited'] == null ? null : DateTime.parse(data['edited'] as String),
+        films: (data['films'] as List<dynamic>?)
+            ?.map((item) => item as String)
+            .toList(),
+        species: (data['species'] as List<dynamic>?)
+            ?.map((item) => item as String)
+            .toList(),
+        vehicles: (data['vehicles'] as List<dynamic>?)
+            ?.map((item) => item as String)
+            .toList(),
+        starships: (data['starships'] as List<dynamic>?)
+            ?.map((item) => item as String)
+            .toList(),
+        created: data['created'] == null
+            ? null
+            : DateTime.parse(data['created'] as String),
+        edited: data['edited'] == null
+            ? null
+            : DateTime.parse(data['edited'] as String),
         url: data['url'] as String?,
       );
 
@@ -75,9 +87,15 @@ class People {
         'url': url,
       };
 
+  /// `dart:convert`
+  ///
+  /// Parses the string and returns the resulting Json object as [People].
   factory People.fromJson(String data) {
     return People.fromMap(json.decode(data) as Map<String, dynamic>);
   }
 
+  /// `dart:convert`
+  ///
+  /// Converts [People] to a JSON string.
   String toJson() => json.encode(toMap());
 }
