@@ -22,25 +22,37 @@ class _PeopleScreenState extends State<PeopleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 165, 92, 23),
           title: Row(children: [
         SizedBox(
             width: 50,
-            child: Image.asset('assets/images/Death-Star-icon.png',
+            child: Image.network('assets/images/Death-Star-icon.png',
                 fit: BoxFit.cover)),
-        const Text('Star Whooot?')
+        const Text('   Star Whooot?', 
+        style: TextStyle(fontFamily: 'Starjedi'))
       ])),
-      body: FutureBuilder<PeopleResponse>(
-        future: peopleResponse,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return _buildPeopleList(snapshot.data!);
-          } else if (snapshot.hasError) {
-            return Text('${snapshot.error}');
-          }
-
-          // By default, show a loading spinner.
-          return const Center(child: CircularProgressIndicator());
-        },
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage('assets/images/desert-texture-background.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: FutureBuilder<PeopleResponse>(
+          future: peopleResponse,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return _buildPeopleList(snapshot.data!);
+            } else if (snapshot.hasError) {
+              return Text('${snapshot.error}');
+            }
+        
+            // By default, show a loading spinner.
+            return const Center(child: CircularProgressIndicator());
+          },
+        ),
       ),
     );
   }
@@ -57,12 +69,62 @@ class _PeopleScreenState extends State<PeopleScreen> {
 
   Widget _buildPeopleList(PeopleResponse peopleResponse) {
     return ListView.builder(
+        scrollDirection: Axis.horizontal,
         itemCount: peopleResponse.results!.length,
         itemBuilder: (context, index) {
-          return Stack(children: [
-            Image.network('https://swapi.dev/api/people/$index'),
-            Text(peopleResponse.results![index].name!),
-          ]);
+          return SizedBox(
+            width: 350,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 20, top: 60, left: 20),
+              child: Stack(
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40),
+                      bottomLeft: Radius.circular(40),
+                      bottomRight: Radius.circular(100),
+                    ),
+                    child: Image(
+                      image: NetworkImage(
+                          'https://starwars-visualguide.com/assets/img/characters/${index + 1}.jpg'),
+                      height: 600,
+                      width: 300,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 450),
+                    alignment: Alignment.center,
+                    height: 150,
+                    width: 300,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                          colors: [
+                            Color.fromARGB(0, 185, 135, 87),
+                            Color.fromARGB(255, 185, 135, 87)
+                          ],
+                          begin: FractionalOffset.topCenter,
+                          end: FractionalOffset.bottomCenter),
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(40),
+                        bottomRight: Radius.circular(100),
+                      ),
+                    ),
+                    child: ListTile(
+                      title: Text(
+                        peopleResponse.results![index].name!,
+                        style: const TextStyle(
+                            fontSize: 22,
+                            color: Color.fromARGB(255, 255, 255, 255),
+                            fontFamily: 'Starjedi'),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
         });
   }
 }
