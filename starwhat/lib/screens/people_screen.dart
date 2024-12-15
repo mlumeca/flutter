@@ -74,12 +74,11 @@ class _PeopleScreenState extends State<PeopleScreen> {
         scrollDirection: Axis.horizontal,
         itemCount: peopleResponse.results!.length,
         itemBuilder: (context, index) {
-          
+          return _buildPeopleItem(context, peopleResponse.results![index]);
         });
   }
 
     Widget _buildPeopleItem(BuildContext context, People people) {
-      final name = people.name; // ????
       final url = people.url;
       final id = url!.split('/')[5];
     return GestureDetector(
@@ -131,7 +130,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
                     ),
                     child: ListTile(
                       title: Text(
-                        peopleResponse.peopleItem.name!, //results![index].name!, ????
+                        people.name!, //results![index].name!, ????
                         style: const TextStyle(
                             fontSize: 22,
                             color: Color.fromARGB(255, 255, 255, 255),
