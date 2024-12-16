@@ -25,12 +25,14 @@ class _PeopleScreenState extends State<PeopleScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 165, 92, 23),
-          title: Row(children: [
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
         SizedBox(
             width: 50,
             child: Image.network('assets/images/Death-Star-icon.png',
                 fit: BoxFit.cover)),
-        const Text('   Star Whooot?', 
+        const Text(' Star Whooot?', 
         style: TextStyle(fontFamily: 'Starjedi'))
       ])),
       body: Container(
@@ -60,7 +62,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
   }
 
   Future<PeopleResponse> getPeople() async {
-    final response = await http.get(Uri.parse('https://swapi.dev/api/people'));
+    final response = await http.get(Uri.parse('https://swapi.tech/api/people'));
 
     if (response.statusCode == 200) {
       return PeopleResponse.fromJson(response.body);
@@ -74,7 +76,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
         scrollDirection: Axis.horizontal,
         itemCount: peopleResponse.results!.length,
         itemBuilder: (context, index) {
-          return _buildPeopleItem(context, peopleResponse.results![index]);
+           return _buildPeopleItem(context, peopleResponse.results![index]);
         });
   }
 
@@ -92,7 +94,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
         child: SizedBox(
             width: 350,
             child: Padding(
-              padding: const EdgeInsets.only(right: 20, top: 60, left: 20),
+              padding: const EdgeInsets.only(right: 20, top: 30, left: 20),
               child: Stack(
                 children: <Widget>[
                   ClipRRect(
@@ -102,12 +104,15 @@ class _PeopleScreenState extends State<PeopleScreen> {
                       bottomLeft: Radius.circular(40),
                       bottomRight: Radius.circular(100),
                     ),
-                    child: Image(
-                      image: NetworkImage(
-                          'https://starwars-visualguide.com/assets/img/characters/$id.jpg'),
-                      height: 600,
-                      width: 300,
-                      fit: BoxFit.cover,
+                    child: Hero(
+                      tag: 'character',
+                      child: Image(
+                        image: NetworkImage(
+                            'https://starwars-visualguide.com/assets/img/characters/$id.jpg'),
+                        height: 600,
+                        width: 300,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                   Container(
@@ -149,4 +154,3 @@ class _PeopleScreenState extends State<PeopleScreen> {
 // add safe space
 // add dropshadow en las cards
 // add footer
-// add navigation
